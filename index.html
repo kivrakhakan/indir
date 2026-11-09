@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Uygulamayı indir</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#0F1712;color:#fff;text-align:center;padding:48px 16px;margin:0}
+a{display:block;margin:16px auto;max-width:320px;padding:18px;border-radius:14px;background:#16A34A;color:#fff;text-decoration:none;font-size:20px;font-weight:600}
+p{color:#9FB8A8}
+</style>
+</head>
+<body>
+<h1>Uygulamayı indir</h1>
+<div id="d"></div>
+<script>
+// HK QR Kod Olusturucu yonlendirme sayfasi.
+// Adres: ?a=<Google Play baglantisi>&i=<App Store baglantisi>
+// Telefon Android ise Google Play'e, iPhone/iPad ise App Store'a gider.
+// Guvenlik: yalnizca play.google.com ve apps.apple.com adreslerine yonlendirir.
+(function () {
+  var q = new URLSearchParams(location.search);
+  function temiz(u, host) {
+    try { var x = new URL(u); return (x.protocol === "https:" && x.hostname === host) ? x.href : ""; }
+    catch (e) { return ""; }
+  }
+  var a = temiz(q.get("a") || "", "play.google.com");
+  var i = temiz(q.get("i") || "", "apps.apple.com");
+  var u = navigator.userAgent || "";
+  var ios = /iPhone|iPad|iPod/i.test(u) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var hedef = ios ? i : (/Android/i.test(u) ? a : "");
+  if (hedef) { location.replace(hedef); }
+  var d = document.getElementById("d");
+  function dugme(href, yazi) { var e = document.createElement("a"); e.href = href; e.textContent = yazi; d.appendChild(e); }
+  if (a) dugme(a, "Google Play");
+  if (i) dugme(i, "App Store");
+  if (!a && !i) { var p = document.createElement("p"); p.textContent = "Bağlantı bulunamadı."; d.appendChild(p); }
+})();
+</script>
+</body>
+</html>
